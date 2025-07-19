@@ -89,15 +89,37 @@ const otherProjects = [
 
 const experiences = [
   {
-    company: "Self-Taught Journey",
+    company: "Self‑Taught Journey",
     title: "Full Stack Developer",
-    range: "2022 — Present",
+    range: "2023 — Present",
     url: "",
     description: [
-      "Built 9+ full-stack web applications using MERN stack with focus on user experience and performance",
-      "Developed e-commerce platforms with payment integration, user authentication, and admin dashboards",
-      "Mastered modern React patterns, state management (Redux, Zustand), and TypeScript for type-safe development",
+      "Built 9+ full‑stack web applications using MERN stack with focus on user experience and performance",
+      "Developed e‑commerce platforms with payment integration, user authentication, and admin dashboards",
+      "Mastered modern React patterns, state management (Redux, Zustand), and TypeScript for type‑safe development",
       "Overcame significant health challenges (Bell's Palsy) and rebuilt technical skills demonstrating resilience and adaptability"
+    ]
+  },
+  {
+    company: "Hajee A. P. Bava & Company (HAPBCO)",
+    title: "Millwright Fitter",
+    range: "2022 — 2023",
+    url: "https://hapbco.co",
+    description: [
+      "Worked on erection and assembly of heavy industrial machinery—boilers, conveyors, pipelines and structural steel—across large‑scale projects in cement, petrochemical, steel, and power plant sectors",
+      "Performed precision alignments, mechanical installations, and conveyor fabrication following strict quality and safety protocols",
+      "Collaborated with engineering and project management teams to ensure timely commissioning of major plant equipment"
+    ]
+  },
+  {
+    company: "KPA Crusher Private Limited (Beta Crusher)",
+    title: "Accountant",
+    range: "2020 — 2022",
+    url: "",
+    description: [
+      "Managed day‑to‑day financial operations including bookkeeping, ledgers, and invoice processing for stone crushing operations at Pulikkal, Malappuram",
+      "Prepared periodic financial statements, expense reconciliations and supported audit documentation to ensure transparency and compliance",
+      "Coordinated with operations team to align finances with production schedules, cost tracking and budgeting"
     ]
   }
 ];
