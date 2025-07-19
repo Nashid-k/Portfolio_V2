@@ -638,32 +638,37 @@ export default function Portfolio() {
                   Here are a few technologies I've been working with recently:
                 </p>
 
-                <div className="grid grid-cols-2 gap-2 font-mono text-sm text-slate-400">
-                  <div className="flex items-center">
-                    <span className="text-teal-400 mr-2">▹</span>
-                    JavaScript (ES6+)
-                  </div>
-                  <div className="flex items-center">
-                    <span className="text-teal-400 mr-2">▹</span>
-                    TypeScript
-                  </div>
-                  <div className="flex items-center">
-                    <span className="text-teal-400 mr-2">▹</span>
-                    React
-                  </div>
-                  <div className="flex items-center">
-                    <span className="text-teal-400 mr-2">▹</span>
-                    Node.js
-                  </div>
-                  <div className="flex items-center">
-                    <span className="text-teal-400 mr-2">▹</span>
-                    MongoDB
-                  </div>
-                  <div className="flex items-center">
-                    <span className="text-teal-400 mr-2">▹</span>
-                    PostgreSQL
-                  </div>
-                </div>
+<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-2 font-mono text-sm text-slate-400">
+  {[
+    "HTML",
+    "CSS",
+    "JavaScript (ES6+)",
+    "TypeScript",
+    "React",
+    "Node.js",
+    "Express",
+    "MongoDB",
+    "PostgreSQL",
+    "Firebase",
+    "Figma",
+    "AWS (EC2)",
+    "Git & GitHub",
+    "Vercel",
+    "Bootstrap",
+    "Tailwind CSS",
+    "Media Queries",
+    "Linux",
+    "C (Basic)",
+    "Java (OOP Basics)",
+    "Data Structures & Algorithms"
+  ].map((tech) => (
+    <div key={tech} className="flex items-center">
+      <span className="text-teal-400 mr-2">▹</span>
+      {tech}
+    </div>
+  ))}
+</div>
+
                 
               </div>
 
