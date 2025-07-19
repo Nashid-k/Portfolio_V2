@@ -918,12 +918,13 @@ export default function Portfolio() {
           </div>
           
           <p className="text-slate-400 font-mono text-sm">
-            Built with ❤️ by claude
+            Built with ❤️ using guidance from Claude AI
           </p>
-          
+
           <p className="text-slate-500 font-mono text-xs mt-2">
             Designed & Built by Nashid K
           </p>
+
         </motion.div>
       </footer>
     </div>
