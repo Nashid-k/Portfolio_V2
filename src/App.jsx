@@ -9,9 +9,9 @@ import {
 const projects = [
   {
     id: "featured-project-1",
-    title: "Fashion E-commerce Platform",
-    description: "A full-featured shopping platform with user authentication, product management, shopping cart functionality, and admin dashboard. Built with Node.js backend and AWS deployment.",
-    tech: ["Node.js", "Express", "MongoDB", "EJS", "AWS"],
+    title: "Fashion Full-Stack E-commerce Platform",
+    description: "A complete e-commerce platform with Google login, email OTP authentication, dynamic cart system, Razorpay payment integration, admin dashboard for product and order management, and secure user sessions. Built with Node.js, Express, and MongoDB for backend, and EJS for templating. Hosted on AWS.",
+    tech: ["Node.js", "Express", "MongoDB", "EJS", "Razorpay", "AWS"],
     github: "https://github.com/Nashid-k/First_Project_Ecommerce",
     external: null,
     icon: <ShoppingCart size={40} />
@@ -27,14 +27,16 @@ const projects = [
   },
   {
     id: "featured-project-3",
-    title: "Netflix Clone",
-    description: "A streaming service clone with movie browsing, category filtering, and state management using Zustand. Integrated with TMDB API for real movie data.",
-    tech: ["React", "Zustand", "TMDB API", "CSS3"],
+    title: "Netflix Full-Stack Clone",
+    description: "A full-stack streaming platform featuring movie browsing, detailed cast pages with movie listings, seamless search/filter for both movies and actors, and global state management using Zustand. Built with React frontend, Node.js/Express backend, and MongoDB for storage. Integrated with TMDB API for real-time content.",
+    tech: ["React", "Node.js", "Express", "MongoDB", "Zustand", "TMDB API", "CSS3"],
     github: "https://github.com/Nashid-k/netflix-clone",
     external: null,
     icon: <Code size={40} />
   }
 ];
+
+
 
 const otherProjects = [
   {
