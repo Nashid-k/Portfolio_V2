@@ -42,50 +42,74 @@ const otherProjects = [
     description: "Feature-rich task management app with session storage persistence, category organization, and clean UI design.",
     tech: ["React", "Session Storage", "Tailwind CSS"],
     github: "https://github.com/Nashid-k/TODO_react",
-    external: "https://todo-react-6qtxru3ph-nashids-projects-e27665ac.vercel.app/",
-    icon: <ListChecks size={24} />
+    external: "https://todo-react-6qtxru3ph-nashids-projects-e27665ac.vercel.app/"
   },
   {
     title: "Weather Dashboard",
     description: "Real-time weather application with dynamic data visualization, geolocation support, and OpenWeather API integration.",
     tech: ["React", "OpenWeather API", "Geolocation"],
     github: "https://github.com/Nashid-k/weather_react",
-    external: null,
-    icon: <CloudRain size={24} />
+    external: null
   },
   {
     title: "TypeScript CRUD App",
     description: "Clean implementation of CRUD operations with React and TypeScript for type-safe development and better code maintainability.",
     tech: ["React", "TypeScript", "Tailwind CSS"],
     github: "https://github.com/Nashid-k/CRUD_App",
-    external: null,
-    icon: <Type size={24} />
+    external: null
   },
   {
     title: "Digital Clock with Alarm",
     description: "Feature-rich digital clock with real-time updates, theme toggle, and advanced alarm system using Web Audio API.",
     tech: ["HTML5", "CSS3", "JavaScript", "Web Audio API"],
     github: "https://github.com/Nashid-k/Digital_Clock",
-    external: "https://nashid-k.github.io/Digital_Clock/",
-    icon: <Clock size={24} />
+    external: "https://nashid-k.github.io/Digital_Clock/"
   },
   {
     title: "Job Listing Application",
     description: "Modern job listing platform with React frontend and Node.js backend, featuring clean design and responsive layout.",
     tech: ["React", "Node.js", "Express", "Tailwind CSS"],
     github: "https://github.com/Nashid-k/JobList_Application",
-    external: null,
-    icon: <FileText size={24} />
+    external: null
   },
   {
     title: "Calculator Application",
     description: "Responsive calculator with clean design and real-time input/output display, built with vanilla JavaScript.",
     tech: ["HTML5", "CSS3", "JavaScript"],
     github: "https://github.com/Nashid-k/Calculator",
-    external: "https://nashid-k.github.io/Calculator/",
-    icon: <Code size={24} />
+    external: "https://nashid-k.github.io/Calculator/"
+  },
+  // New projects added here:
+  {
+    title: "Kiwi Static Clone",
+    description: "Static clone of Kiwi website built with HTML and CSS.",
+    tech: ["HTML", "CSS"],
+    github: "https://github.com/Nashid-k/kiwi",
+    external: "https://nashid-k.github.io/kiwi/"
+  },
+  {
+    title: "Huawei Static Clone",
+    description: "Static clone of Huawei website using HTML and CSS.",
+    tech: ["HTML", "CSS"],
+    github: "https://github.com/Nashid-k/huawei",
+    external: "https://nashid-k.github.io/huawei/"
+  },
+  {
+    title: "Appy Fizz Responsive Clone",
+    description: "Responsive clone of Appy Fizz using HTML, CSS, JS, Bootstrap, and media queries.",
+    tech: ["HTML", "CSS", "JavaScript", "Bootstrap", "Media Queries"],
+    github: "https://github.com/Nashid-k/APPY-FIZZ-RESPONSIVE",
+    external: "https://nashid-k.github.io/APPY-FIZZ-RESPONSIVE/"
+  },
+  {
+    title: "First Responsive Portfolio",
+    description: "Responsive portfolio using HTML, CSS, Google Form submission, Bootstrap, and media queries.",
+    tech: ["HTML", "CSS", "Bootstrap", "Google Forms", "Media Queries"],
+    github: "https://github.com/Nashid-k/personal-website",
+    external: "https://nashid-k.github.io/personal-website/"
   }
 ];
+
 
 const experiences = [
   {
