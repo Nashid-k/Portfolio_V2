@@ -115,19 +115,21 @@ const otherProjects = [
 
 const experiences = [
   {
-    company: "Self‑Taught Journey",
+    company: "Self‑Taught & Professional Development",
     title: "Full Stack Developer",
     range: "2023 — Present",
-    url: "",
+    url: "https://www.brototype.com/",
     description: [
       "Built 9+ full‑stack web applications using MERN stack with focus on user experience and performance",
-      "Developed e‑commerce platforms with payment integration, user authentication, and admin dashboards",
+      "Completed intensive full-time mentorship program at Brototype (Dec 2023 — Nov 2024) focused on MERN stack development and career transformation",
+      "Developed e‑commerce platforms with payment integration, user authentication, and admin dashboards including fashion e‑commerce site (Nashifa)",
+      "Applied version control with Git/GitHub, deployed applications using AWS, and improved code quality through weekly code reviews",
       "Mastered modern React patterns, state management (Redux, Zustand), and TypeScript for type‑safe development",
       "Overcame significant health challenges (Bell's Palsy) and rebuilt technical skills demonstrating resilience and adaptability"
     ]
   },
   {
-    company: "Hajee A. P. Bava & Company (HAPBCO)",
+    company: "Hajee A. P. Bava & Company (HAPBCO)",
     title: "Millwright Fitter",
     range: "2022 — 2023",
     url: "https://hapbco.co",
@@ -150,7 +152,6 @@ const experiences = [
   }
 ];
 
-// Enhanced Custom Cursor Component
 const CustomCursor = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isPointer, setIsPointer] = useState(false);
@@ -174,9 +175,20 @@ const CustomCursor = () => {
     if (!isDesktop) return;
 
     let rafId;
+    let lastTime = 0;
+    const throttleMs = 16; // ~60fps
     
     const updateMousePosition = (e) => {
-      // Use requestAnimationFrame for smoother animations
+      const now = performance.now();
+      if (now - lastTime < throttleMs) return;
+      
+      lastTime = now;
+      
+      // Cancel previous frame if still pending
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+      }
+      
       rafId = requestAnimationFrame(() => {
         setMousePosition({ x: e.clientX, y: e.clientY });
       });
@@ -192,17 +204,25 @@ const CustomCursor = () => {
       document.body.style.cursor = 'auto';
     };
 
+    // Throttle cursor type updates
+    let cursorTypeTimeout;
     const updateCursorType = (e) => {
-      const target = e.target;
-      const isClickable = target.matches('a, button, [role="button"], input, textarea, select, [onclick], .cursor-pointer') ||
-                         target.closest('a, button, [role="button"], input, textarea, select, [onclick], .cursor-pointer');
-      setIsPointer(isClickable);
+      if (cursorTypeTimeout) {
+        clearTimeout(cursorTypeTimeout);
+      }
+      
+      cursorTypeTimeout = setTimeout(() => {
+        const target = e.target;
+        const isClickable = target.matches('a, button, [role="button"], input, textarea, select, [onclick], .cursor-pointer') ||
+                           target.closest('a, button, [role="button"], input, textarea, select, [onclick], .cursor-pointer');
+        setIsPointer(isClickable);
+      }, 10);
     };
 
-    document.addEventListener('mousemove', updateMousePosition);
+    document.addEventListener('mousemove', updateMousePosition, { passive: true });
     document.addEventListener('mouseenter', handleMouseEnter);
     document.addEventListener('mouseleave', handleMouseLeave);
-    document.addEventListener('mouseover', updateCursorType);
+    document.addEventListener('mouseover', updateCursorType, { passive: true });
 
     return () => {
       document.removeEventListener('mousemove', updateMousePosition);
@@ -212,6 +232,9 @@ const CustomCursor = () => {
       document.body.style.cursor = 'auto';
       if (rafId) {
         cancelAnimationFrame(rafId);
+      }
+      if (cursorTypeTimeout) {
+        clearTimeout(cursorTypeTimeout);
       }
     };
   }, [isDesktop]);
@@ -233,13 +256,13 @@ const CustomCursor = () => {
         }}
         transition={{
           type: "spring",
-          stiffness: 500,
-          damping: 28,
-          mass: 0.5
+          stiffness: 800,
+          damping: 35,
+          mass: 0.3
         }}
       />
       
-      {/* Cursor ring */}
+      {/* Cursor ring - reduced complexity */}
       <motion.div
         className="fixed w-8 h-8 border-2 border-teal-400/60 rounded-full pointer-events-none z-[9998]"
         style={{
@@ -252,71 +275,49 @@ const CustomCursor = () => {
         }}
         transition={{
           type: "spring",
-          stiffness: 300,
+          stiffness: 400,
           damping: 30,
-          mass: 0.8
+          mass: 0.5
         }}
       />
       
-      {/* Large glow effect */}
+      {/* Simplified glow effect - removed extra layers */}
       <motion.div
         className="fixed w-24 h-24 rounded-full pointer-events-none z-[9997]"
         style={{
           left: mousePosition.x - 48,
           top: mousePosition.y - 48,
-          background: 'radial-gradient(circle, rgba(45, 212, 191, 0.15) 0%, rgba(45, 212, 191, 0.08) 40%, transparent 70%)',
-        }}
-        animate={{
-          scale: isPointer ? 1.3 : 1,
-          opacity: isVisible ? 1 : 0,
-        }}
-        transition={{
-          type: "spring",
-          stiffness: 150,
-          damping: 25,
-          mass: 1.2
-        }}
-      />
-
-      {/* Extra large ambient glow */}
-      <motion.div
-        className="fixed w-40 h-40 rounded-full pointer-events-none z-[9996]"
-        style={{
-          left: mousePosition.x - 80,
-          top: mousePosition.y - 80,
-          background: 'radial-gradient(circle, rgba(45, 212, 191, 0.08) 0%, rgba(45, 212, 191, 0.03) 30%, transparent 60%)',
+          background: 'radial-gradient(circle, rgba(45, 212, 191, 0.1) 0%, transparent 60%)',
         }}
         animate={{
           scale: isPointer ? 1.2 : 1,
-          opacity: isVisible ? 0.8 : 0,
+          opacity: isVisible ? 0.6 : 0,
         }}
         transition={{
           type: "spring",
-          stiffness: 100,
-          damping: 30,
-          mass: 1.5
+          stiffness: 200,
+          damping: 25,
+          mass: 0.8
         }}
       />
 
-      {/* Click ripple effect */}
+      {/* Simplified click ripple effect */}
       <AnimatePresence>
         {isPointer && (
           <motion.div
-            className="fixed w-16 h-16 border-2 border-teal-400/40 rounded-full pointer-events-none z-[9995]"
+            className="fixed w-12 h-12 border border-teal-400/30 rounded-full pointer-events-none z-[9995]"
             style={{
-              left: mousePosition.x - 32,
-              top: mousePosition.y - 32,
+              left: mousePosition.x - 24,
+              top: mousePosition.y - 24,
             }}
-            initial={{ scale: 0.5, opacity: 0 }}
+            initial={{ scale: 0.8, opacity: 0 }}
             animate={{ 
-              scale: 1.2, 
-              opacity: [0, 0.6, 0],
+              scale: 1.3, 
+              opacity: [0, 0.4, 0],
             }}
             exit={{ scale: 1.5, opacity: 0 }}
             transition={{
-              duration: 0.8,
-              repeat: Infinity,
-              repeatDelay: 0.5,
+              duration: 1.2,
               ease: "easeOut"
             }}
           />
@@ -369,7 +370,11 @@ export default function Portfolio() {
       </div>
 
       {/* Navigation */}
-      <header className="fixed top-0 z-50 w-full px-6 py-6 lg:px-12">
+      <header className={`fixed top-0 z-50 w-full px-6 py-6 lg:px-12 transition-all duration-300 ${
+        scrollY > 100 
+          ? 'bg-slate-900/95 backdrop-blur-md shadow-lg' 
+          : 'bg-transparent'
+      }`}>
         <nav className="flex items-center justify-between">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
