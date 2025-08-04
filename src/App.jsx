@@ -1,5 +1,4 @@
-
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   ExternalLink, Github, Linkedin, Mail, FileText, Menu, X,
@@ -9,149 +8,123 @@ import {
 const projects = [
   {
     id: "featured-project-1",
-    title: "Fashion Full-Stack E-commerce Platform",
-    description: "A complete e-commerce platform with Google login, email OTP authentication, dynamic cart system, Razorpay payment integration, admin dashboard for product and order management, and secure user sessions. Built with Node.js, Express, and MongoDB for backend, and EJS for templating. Hosted on AWS.",
-    tech: ["Node.js", "Express", "MongoDB", "EJS", "Razorpay", "AWS"],
+    title: "BlogHub — Full Stack Blogging Platform",
+    description: "A comprehensive multi-user blogging platform with role-based access controls, secure JWT authentication, full CRUD operations, and real-time analytics dashboards. Features input validation, CORS management, and responsive mobile-first UI design. Built with modern security best practices.",
+    tech: ["React.js", "Node.js", "Express.js", "MongoDB", "JWT", "Context API", "bcryptjs"],
+    github: "https://github.com/Nashid-k/BlogHub",
+    external: null,
+    icon: <Code size={40} />
+  },
+  {
+    id: "featured-project-2",
+    title: "Fashion E-commerce Platform",
+    description: "Complete e-commerce solution with Razorpay payment processing, inventory management, Google OAuth and OTP-based authentication. Features admin dashboards for product/order tracking, analytics, and secure cloud deployment on AWS EC2 with comprehensive security configurations.",
+    tech: ["Node.js", "Express.js", "MongoDB", "EJS", "Razorpay", "AWS EC2", "Google OAuth"],
     github: "https://github.com/Nashid-k/First_Project_Ecommerce",
     external: null,
     icon: <ShoppingCart size={40} />
   },
   {
-    id: "featured-project-2", 
-    title: "OLX Clone",
-    description: "A marketplace clone featuring product listings, advanced search functionality, and user interactions. Implemented with modern React patterns and Firebase integration.",
-    tech: ["React", "Tailwind CSS", "Firebase"],
-    github: "https://github.com/Nashid-k/olx-clone_updated",
-    external: "https://olx-demo-delta.vercel.app/home",
-    icon: <Layers size={40} />
-  },
-  {
     id: "featured-project-3",
-    title: "Netflix Full-Stack Clone",
-    description: "A full-stack streaming platform featuring movie browsing, detailed cast pages with movie listings, seamless search/filter for both movies and actors, and global state management using Zustand. Built with React frontend, Node.js/Express backend, and MongoDB for storage. Integrated with TMDB API for real-time content.",
-    tech: ["React", "Node.js", "Express", "MongoDB", "Zustand", "TMDB API", "CSS3"],
+    title: "Netflix Clone — Streaming Platform",
+    description: "Full-featured streaming service recreation with TMDB API integration, advanced search and filtering capabilities, personalized recommendations, dynamic content delivery, and real-time user watch history tracking. Built with modern state management using Zustand.",
+    tech: ["React.js", "Node.js", "Express.js", "MongoDB", "Zustand", "TMDB API"],
     github: "https://github.com/Nashid-k/netflix-clone",
     external: null,
-    icon: <Code size={40} />
+    icon: <Layers size={40} />
   }
 ];
 
-
-
 const otherProjects = [
   {
-    title: "Advanced Todo Application",
-    description: "Feature-rich task management app with session storage persistence, category organization, and clean UI design.",
-    tech: ["React", "Session Storage", "Tailwind CSS"],
-    github: "https://github.com/Nashid-k/TODO_react",
-    external: "https://todo-react-6qtxru3ph-nashids-projects-e27665ac.vercel.app/"
+    title: "Marketplace Clone (OLX-style)",
+    description: "Real-time product listing platform with advanced search and filtering, Firebase authentication, location-based queries, responsive UI with modular components and efficient state management.",
+    tech: ["React.js", "Firebase", "Tailwind CSS", "Context API"],
+    github: "https://github.com/Nashid-k/olx-clone_updated",
+    external: "https://olx-demo-delta.vercel.app"
+  },
+  {
+    title: "Job Listing Platform",
+    description: "Scalable job portal with React frontend and Node.js backend, featuring REST APIs and responsive design using Tailwind CSS for optimal user experience.",
+    tech: ["React", "Node.js", "Express", "Tailwind CSS"],
+    github: "https://github.com/Nashid-k/JobList_Application",
+    external: null
   },
   {
     title: "Weather Dashboard",
-    description: "Real-time weather application with dynamic data visualization, geolocation support, and OpenWeather API integration.",
+    description: "Geolocation-aware weather dashboard using OpenWeather API with dynamic updates, auto-location weather detection, and real-time data visualization.",
     tech: ["React", "OpenWeather API", "Geolocation"],
     github: "https://github.com/Nashid-k/weather_react",
     external: null
   },
   {
-    title: "TypeScript CRUD App",
-    description: "Clean implementation of CRUD operations with React and TypeScript for type-safe development and better code maintainability.",
+    title: "TypeScript CRUD Tool",
+    description: "Type-safe CRUD application implementing React and TypeScript best practices with maintainable state management and modular design architecture.",
     tech: ["React", "TypeScript", "Tailwind CSS"],
     github: "https://github.com/Nashid-k/CRUD_App",
     external: null
   },
   {
     title: "Digital Clock with Alarm",
-    description: "Feature-rich digital clock with real-time updates, theme toggle, and advanced alarm system using Web Audio API.",
+    description: "Multi-theme digital clock with Web Audio API integration, smooth animations, real-time alarms, and responsive mobile-friendly user interface.",
     tech: ["HTML5", "CSS3", "JavaScript", "Web Audio API"],
     github: "https://github.com/Nashid-k/Digital_Clock",
     external: "https://nashid-k.github.io/Digital_Clock/"
   },
   {
-    title: "Job Listing Application",
-    description: "Modern job listing platform with React frontend and Node.js backend, featuring clean design and responsive layout.",
-    tech: ["React", "Node.js", "Express", "Tailwind CSS"],
-    github: "https://github.com/Nashid-k/JobList_Application",
-    external: null
-  },
-  {
-    title: "Calculator Application",
-    description: "Responsive calculator with clean design and real-time input/output display, built with vanilla JavaScript.",
-    tech: ["HTML5", "CSS3", "JavaScript"],
-    github: "https://github.com/Nashid-k/Calculator",
-    external: "https://nashid-k.github.io/Calculator/"
-  },
-  // New projects added here:
-  {
-    title: "Kiwi Static Clone",
-    description: "Static clone of Kiwi website built with HTML and CSS.",
-    tech: ["HTML", "CSS"],
-    github: "https://github.com/Nashid-k/kiwi",
-    external: "https://nashid-k.github.io/kiwi/"
-  },
-  {
-    title: "Huawei Static Clone",
-    description: "Static clone of Huawei website using HTML and CSS.",
-    tech: ["HTML", "CSS"],
-    github: "https://github.com/Nashid-k/huawei",
-    external: "https://nashid-k.github.io/huawei/"
-  },
-  {
-    title: "Appy Fizz Responsive Clone",
-    description: "Responsive clone of Appy Fizz using HTML, CSS, JS, Bootstrap, and media queries.",
-    tech: ["HTML", "CSS", "JavaScript", "Bootstrap", "Media Queries"],
-    github: "https://github.com/Nashid-k/APPY-FIZZ-RESPONSIVE",
-    external: "https://nashid-k.github.io/APPY-FIZZ-RESPONSIVE/"
-  },
-  {
-    title: "First Responsive Portfolio",
-    description: "Responsive portfolio using HTML, CSS, Google Form submission, Bootstrap, and media queries.",
-    tech: ["HTML", "CSS", "Bootstrap", "Google Forms", "Media Queries"],
-    github: "https://github.com/Nashid-k/personal-website",
-    external: "https://nashid-k.github.io/personal-website/"
+    title: "Advanced Todo Application",
+    description: "Feature-rich task management app with session storage persistence, category organization, and clean UI design.",
+    tech: ["React", "Session Storage", "Tailwind CSS"],
+    github: "https://github.com/Nashid-k/TODO_react",
+    external: "https://todo-react-6qtxru3ph-nashids-projects-e27665ac.vercel.app/"
   }
 ];
-
 
 const experiences = [
   {
-    company: "Self‑Taught & Professional Development",
-    title: "Full Stack Developer",
-    range: "2023 — Present",
-    url: "https://www.brototype.com/",
-    description: [
-      "Built 9+ full‑stack web applications using MERN stack with focus on user experience and performance",
-      "Completed intensive full-time mentorship program at Brototype (Dec 2023 — Nov 2024) focused on MERN stack development and career transformation",
-      "Developed e‑commerce platforms with payment integration, user authentication, and admin dashboards including fashion e‑commerce site (Nashifa)",
-      "Applied version control with Git/GitHub, deployed applications using AWS, and improved code quality through weekly code reviews",
-      "Mastered modern React patterns, state management (Redux, Zustand), and TypeScript for type‑safe development",
-      "Overcame significant health challenges (Bell's Palsy) and rebuilt technical skills demonstrating resilience and adaptability"
-    ]
-  },
-  {
-    company: "Hajee A. P. Bava & Company (HAPBCO)",
-    title: "Millwright Fitter",
-    range: "2022 — 2023",
-    url: "https://hapbco.co",
-    description: [
-      "Worked on erection and assembly of heavy industrial machinery—boilers, conveyors, pipelines and structural steel—across large‑scale projects in cement, petrochemical, steel, and power plant sectors",
-      "Performed precision alignments, mechanical installations, and conveyor fabrication following strict quality and safety protocols",
-      "Collaborated with engineering and project management teams to ensure timely commissioning of major plant equipment"
-    ]
-  },
-  {
-    company: "KPA Crusher Private Limited (Beta Crusher)",
-    title: "Accountant",
-    range: "2020 — 2022",
+    company: "Self-Learning & Independent Development",
+    title: "Focused Upskilling During Recovery",
+    range: "November 2024 — Present",
     url: "",
     description: [
-      "Managed day‑to‑day financial operations including bookkeeping, ledgers, and invoice processing for stone crushing operations at Pulikkal, Malappuram",
-      "Prepared periodic financial statements, expense reconciliations and supported audit documentation to ensure transparency and compliance",
-      "Coordinated with operations team to align finances with production schedules, cost tracking and budgeting"
+      "Dedicated personal study and project work to broaden expertise in JavaScript, TypeScript and modern frameworks",
+      "Developed multiple full-stack MERN applications simulating real-world requirements with production-ready features",
+      "Contributed to over 50 open-source repositories, refining code quality and best practices",
+      "Explored scalable system design, microservices architecture, and database optimization strategies",
+      "Prepared rigorously for technical interviews to align with current industry demands and modern development practices"
+    ]
+  },
+  {
+    company: "Brototype — MERN Stack Program",
+    title: "Full Stack Development Intern",
+    range: "December 2023 — November 2024",
+    url: "https://www.brototype.com/",
+    description: [
+      "Completed intensive 1,000+ hour MERN stack training with project-based deliverables and hands-on learning",
+      "Engineered 8+ production-ready web applications, covering comprehensive front-end to backend integration",
+      "Advanced React skills including hooks, lifecycle management, performance optimization, and modern patterns",
+      "Designed scalable REST APIs using Node.js and Express.js with seamless MongoDB integration",
+      "Implemented robust authentication systems using JWT, OAuth, and encrypted password storage with security best practices",
+      "Collaborated in Agile teams using Git workflows, participating in code review sessions and pair programming",
+      "Handled deployments on AWS and Vercel, managing CI/CD pipelines and environment variables for production environments"
+    ]
+  },
+  {
+    company: "Hajee A. P. Bava & Co. (HAPBCO)",
+    title: "Industrial Technician",
+    range: "March 2022 — November 2023",
+    url: "https://hapbco.co",
+    description: [
+      "Installed and maintained complex industrial machinery, ensuring timely project completion and quality standards",
+      "Coordinated with engineering teams to meet critical project milestones and maintain high-quality deliverables",
+      "Troubleshot technical issues efficiently, improving system uptime and operational reliability",
+      "Enforced strict adherence to safety protocols in demanding industrial environments",
+      "Developed strong problem-solving skills and attention to detail in high-pressure situations"
     ]
   }
 ];
 
+// Simplified custom cursor component
 const CustomCursor = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isPointer, setIsPointer] = useState(false);
@@ -159,40 +132,27 @@ const CustomCursor = () => {
   const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
-    // Check if device supports hover (desktop/laptop)
     const mediaQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
     setIsDesktop(mediaQuery.matches);
 
-    const handleMediaChange = (e) => {
-      setIsDesktop(e.matches);
-    };
-
+    const handleMediaChange = (e) => setIsDesktop(e.matches);
     mediaQuery.addEventListener('change', handleMediaChange);
     return () => mediaQuery.removeEventListener('change', handleMediaChange);
   }, []);
 
+  const updateMousePosition = useCallback((e) => {
+    setMousePosition({ x: e.clientX, y: e.clientY });
+  }, []);
+
+  const updateCursorType = useCallback((e) => {
+    const target = e.target;
+    const isClickable = target.matches('a, button, [role="button"], input, textarea, select, [onclick], .cursor-pointer') ||
+                       target.closest('a, button, [role="button"], input, textarea, select, [onclick], .cursor-pointer');
+    setIsPointer(isClickable);
+  }, []);
+
   useEffect(() => {
     if (!isDesktop) return;
-
-    let rafId;
-    let lastTime = 0;
-    const throttleMs = 16; // ~60fps
-    
-    const updateMousePosition = (e) => {
-      const now = performance.now();
-      if (now - lastTime < throttleMs) return;
-      
-      lastTime = now;
-      
-      // Cancel previous frame if still pending
-      if (rafId) {
-        cancelAnimationFrame(rafId);
-      }
-      
-      rafId = requestAnimationFrame(() => {
-        setMousePosition({ x: e.clientX, y: e.clientY });
-      });
-    };
 
     const handleMouseEnter = () => {
       setIsVisible(true);
@@ -202,21 +162,6 @@ const CustomCursor = () => {
     const handleMouseLeave = () => {
       setIsVisible(false);
       document.body.style.cursor = 'auto';
-    };
-
-    // Throttle cursor type updates
-    let cursorTypeTimeout;
-    const updateCursorType = (e) => {
-      if (cursorTypeTimeout) {
-        clearTimeout(cursorTypeTimeout);
-      }
-      
-      cursorTypeTimeout = setTimeout(() => {
-        const target = e.target;
-        const isClickable = target.matches('a, button, [role="button"], input, textarea, select, [onclick], .cursor-pointer') ||
-                           target.closest('a, button, [role="button"], input, textarea, select, [onclick], .cursor-pointer');
-        setIsPointer(isClickable);
-      }, 10);
     };
 
     document.addEventListener('mousemove', updateMousePosition, { passive: true });
@@ -230,99 +175,32 @@ const CustomCursor = () => {
       document.removeEventListener('mouseleave', handleMouseLeave);
       document.removeEventListener('mouseover', updateCursorType);
       document.body.style.cursor = 'auto';
-      if (rafId) {
-        cancelAnimationFrame(rafId);
-      }
-      if (cursorTypeTimeout) {
-        clearTimeout(cursorTypeTimeout);
-      }
     };
-  }, [isDesktop]);
+  }, [isDesktop, updateMousePosition, updateCursorType]);
 
   if (!isDesktop || !isVisible) return null;
 
   return (
     <>
-      {/* Main cursor dot */}
-      <motion.div
-        className="fixed w-3 h-3 bg-teal-400 rounded-full pointer-events-none z-[9999] mix-blend-difference"
+      {/* Main cursor dot - simplified */}
+      <div 
+        className="fixed w-2 h-2 bg-teal-400 rounded-full pointer-events-none z-[9999] mix-blend-difference transition-transform duration-75"
         style={{
-          left: mousePosition.x - 6,
-          top: mousePosition.y - 6,
-        }}
-        animate={{
-          scale: isPointer ? 1.5 : 1,
-          opacity: isVisible ? 1 : 0,
-        }}
-        transition={{
-          type: "spring",
-          stiffness: 800,
-          damping: 35,
-          mass: 0.3
+          left: mousePosition.x - 4,
+          top: mousePosition.y - 4,
+          transform: `scale(${isPointer ? 1.5 : 1})`,
         }}
       />
       
-      {/* Cursor ring - reduced complexity */}
-      <motion.div
-        className="fixed w-8 h-8 border-2 border-teal-400/60 rounded-full pointer-events-none z-[9998]"
+      {/* Cursor ring - simplified */}
+      <div 
+        className="fixed w-8 h-8 border border-teal-400/40 rounded-full pointer-events-none z-[9998] transition-transform duration-150"
         style={{
           left: mousePosition.x - 16,
           top: mousePosition.y - 16,
-        }}
-        animate={{
-          scale: isPointer ? 1.8 : 1,
-          opacity: isVisible ? 1 : 0,
-        }}
-        transition={{
-          type: "spring",
-          stiffness: 400,
-          damping: 30,
-          mass: 0.5
+          transform: `scale(${isPointer ? 1.5 : 1})`,
         }}
       />
-      
-      {/* Simplified glow effect - removed extra layers */}
-      <motion.div
-        className="fixed w-24 h-24 rounded-full pointer-events-none z-[9997]"
-        style={{
-          left: mousePosition.x - 48,
-          top: mousePosition.y - 48,
-          background: 'radial-gradient(circle, rgba(45, 212, 191, 0.1) 0%, transparent 60%)',
-        }}
-        animate={{
-          scale: isPointer ? 1.2 : 1,
-          opacity: isVisible ? 0.6 : 0,
-        }}
-        transition={{
-          type: "spring",
-          stiffness: 200,
-          damping: 25,
-          mass: 0.8
-        }}
-      />
-
-      {/* Simplified click ripple effect */}
-      <AnimatePresence>
-        {isPointer && (
-          <motion.div
-            className="fixed w-12 h-12 border border-teal-400/30 rounded-full pointer-events-none z-[9995]"
-            style={{
-              left: mousePosition.x - 24,
-              top: mousePosition.y - 24,
-            }}
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ 
-              scale: 1.3, 
-              opacity: [0, 0.4, 0],
-            }}
-            exit={{ scale: 1.5, opacity: 0 }}
-            transition={{
-              duration: 1.2,
-              ease: "easeOut"
-            }}
-          />
-        )}
-      </AnimatePresence>
     </>
   );
 };
@@ -333,28 +211,50 @@ export default function Portfolio() {
   const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
-    // Check if device supports hover (desktop/laptop)
     const mediaQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
     setIsDesktop(mediaQuery.matches);
 
-    const handleMediaChange = (e) => {
-      setIsDesktop(e.matches);
-    };
-
+    const handleMediaChange = (e) => setIsDesktop(e.matches);
     mediaQuery.addEventListener('change', handleMediaChange);
     return () => mediaQuery.removeEventListener('change', handleMediaChange);
   }, []);
 
+  // Throttled scroll handler
   useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener('scroll', handleScroll);
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          setScrollY(window.scrollY);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToSection = (sectionId) => {
+  const scrollToSection = useCallback((sectionId) => {
     document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
     setIsMenuOpen(false);
-  };
+  }, []);
+
+  // Memoized animation variants to prevent recreation
+  const fadeInUp = useMemo(() => ({
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.5 }
+  }), []);
+
+  const staggerContainer = useMemo(() => ({
+    initial: { opacity: 0 },
+    animate: { 
+      opacity: 1,
+      transition: { staggerChildren: 0.1 }
+    }
+  }), []);
 
   return (
     <div 
@@ -364,9 +264,9 @@ export default function Portfolio() {
       {/* Custom Cursor */}
       <CustomCursor />
 
-      {/* Background Pattern */}
-      <div className="fixed inset-0 z-0">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
+      {/* Simplified Background Pattern */}
+      <div className="fixed inset-0 z-0 opacity-50">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#334155_1px,transparent_1px),linear-gradient(to_bottom,#334155_1px,transparent_1px)] bg-[size:40px_40px]" />
       </div>
 
       {/* Navigation */}
@@ -376,11 +276,7 @@ export default function Portfolio() {
           : 'bg-transparent'
       }`}>
         <nav className="flex items-center justify-between">
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
+          <motion.div {...fadeInUp}>
             <a
               href="/"
               className="text-lg font-mono text-teal-400 hover:text-teal-300 transition-colors cursor-pointer"
@@ -391,35 +287,24 @@ export default function Portfolio() {
 
           {/* Desktop Navigation */}
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
+            {...fadeInUp}
             transition={{ duration: 0.5, delay: 0.1 }}
             className="hidden lg:flex items-center space-x-8"
           >
-            <button
-              onClick={() => scrollToSection('about')}
-              className="text-sm font-mono text-slate-300 hover:text-teal-300 transition-colors cursor-pointer"
-            >
-              <span className="text-teal-400">01.</span> About
-            </button>
-            <button
-              onClick={() => scrollToSection('experience')}
-              className="text-sm font-mono text-slate-300 hover:text-teal-300 transition-colors cursor-pointer"
-            >
-              <span className="text-teal-400">02.</span> Experience
-            </button>
-            <button
-              onClick={() => scrollToSection('work')}
-              className="text-sm font-mono text-slate-300 hover:text-teal-300 transition-colors cursor-pointer"
-            >
-              <span className="text-teal-400">03.</span> Work
-            </button>
-            <button
-              onClick={() => scrollToSection('contact')}
-              className="text-sm font-mono text-slate-300 hover:text-teal-300 transition-colors cursor-pointer"
-            >
-              <span className="text-teal-400">04.</span> Contact
-            </button>
+            {[
+              { id: 'about', label: '01. About' },
+              { id: 'experience', label: '02. Experience' },
+              { id: 'work', label: '03. Work' },
+              { id: 'contact', label: '04. Contact' }
+            ].map(({ id, label }) => (
+              <button
+                key={id}
+                onClick={() => scrollToSection(id)}
+                className="text-sm font-mono text-slate-300 hover:text-teal-300 transition-colors cursor-pointer"
+              >
+                {label}
+              </button>
+            ))}
             <a
               href="/Nashid_Resume.pdf"
               target="_blank"
@@ -458,30 +343,20 @@ export default function Portfolio() {
                   <X size={24} />
                 </button>
                 <nav className="flex flex-col space-y-8 font-mono text-lg">
-                  <button
-                    onClick={() => scrollToSection('about')}
-                    className="text-left text-slate-300 hover:text-teal-300 cursor-pointer"
-                  >
-                    <span className="text-teal-400">01.</span> About
-                  </button>
-                  <button
-                    onClick={() => scrollToSection('experience')}
-                    className="text-left text-slate-300 hover:text-teal-300 cursor-pointer"
-                  >
-                    <span className="text-teal-400">02.</span> Experience
-                  </button>
-                  <button
-                    onClick={() => scrollToSection('work')}
-                    className="text-left text-slate-300 hover:text-teal-300 cursor-pointer"
-                  >
-                    <span className="text-teal-400">03.</span> Work
-                  </button>
-                  <button
-                    onClick={() => scrollToSection('contact')}
-                    className="text-left text-slate-300 hover:text-teal-300 cursor-pointer"
-                  >
-                    <span className="text-teal-400">04.</span> Contact
-                  </button>
+                  {[
+                    { id: 'about', label: '01. About' },
+                    { id: 'experience', label: '02. Experience' },
+                    { id: 'work', label: '03. Work' },
+                    { id: 'contact', label: '04. Contact' }
+                  ].map(({ id, label }) => (
+                    <button
+                      key={id}
+                      onClick={() => scrollToSection(id)}
+                      className="text-left text-slate-300 hover:text-teal-300 cursor-pointer"
+                    >
+                      {label}
+                    </button>
+                  ))}
                   <a
                     href="/Nashid_Resume.pdf"
                     target="_blank"
@@ -505,28 +380,21 @@ export default function Portfolio() {
           transition={{ duration: 0.5, delay: 1 }}
           className="flex flex-col items-center space-y-6 after:content-[''] after:block after:w-px after:h-24 after:bg-slate-400 after:mt-6"
         >
-          <a
-            href="https://github.com/Nashid-k"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-slate-400 hover:text-teal-300 hover:-translate-y-1 transition-all duration-300 cursor-pointer"
-          >
-            <Github size={20} />
-          </a>
-          <a
-            href="https://linkedin.com/in/nashid-k"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-slate-400 hover:text-teal-300 hover:-translate-y-1 transition-all duration-300 cursor-pointer"
-          >
-            <Linkedin size={20} />
-          </a>
-          <a
-            href="mailto:nashidk1999@gmail.com"
-            className="text-slate-400 hover:text-teal-300 hover:-translate-y-1 transition-all duration-300 cursor-pointer"
-          >
-            <Mail size={20} />
-          </a>
+          {[
+            { href: "https://github.com/Nashid-k", icon: Github },
+            { href: "https://linkedin.com/in/nashid-k", icon: Linkedin },
+            { href: "mailto:nashidk1999@gmail.com", icon: Mail }
+          ].map(({ href, icon: Icon }, index) => (
+            <a
+              key={index}
+              href={href}
+              target={href.startsWith('mailto:') ? undefined : "_blank"}
+              rel={href.startsWith('mailto:') ? undefined : "noopener noreferrer"}
+              className="text-slate-400 hover:text-teal-300 hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+            >
+              <Icon size={20} />
+            </a>
+          ))}
         </motion.div>
       </div>
 
@@ -610,7 +478,7 @@ export default function Portfolio() {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6 }}
           >
             <h2 className="flex items-center text-2xl lg:text-3xl font-bold text-slate-200 mb-8">
@@ -643,38 +511,17 @@ export default function Portfolio() {
                   Here are a few technologies I've been working with recently:
                 </p>
 
-<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-2 font-mono text-sm text-slate-400">
-  {[
-    "HTML",
-    "CSS",
-    "JavaScript (ES6+)",
-    "TypeScript",
-    "React",
-    "Node.js",
-    "Express",
-    "MongoDB",
-    "PostgreSQL",
-    "Firebase",
-    "Figma",
-    "AWS (EC2)",
-    "Git & GitHub",
-    "Vercel",
-    "Bootstrap",
-    "Tailwind CSS",
-    "Media Queries",
-    "Linux",
-    "C (Basic)",
-    "Java (OOP Basics)",
-    "Data Structures & Algorithms"
-  ].map((tech) => (
-    <div key={tech} className="flex items-center">
-      <span className="text-teal-400 mr-2">▹</span>
-      {tech}
-    </div>
-  ))}
-</div>
-
-                
+                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-2 font-mono text-sm text-slate-400">
+                  {[
+                    "JavaScript (ES6+)", "TypeScript", "React", "Node.js", "Express", "MongoDB",
+                    "PostgreSQL", "Firebase", "AWS (EC2)", "Git & GitHub", "Tailwind CSS", "Bootstrap"
+                  ].map((tech) => (
+                    <div key={tech} className="flex items-center">
+                      <span className="text-teal-400 mr-2">▹</span>
+                      {tech}
+                    </div>
+                  ))}
+                </div>
               </div>
 
               <div className="relative">
@@ -699,7 +546,7 @@ export default function Portfolio() {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6 }}
           >
             <h2 className="flex items-center text-2xl lg:text-3xl font-bold text-slate-200 mb-12">
@@ -708,9 +555,9 @@ export default function Portfolio() {
               <div className="ml-4 h-px bg-slate-600 flex-1 max-w-xs"></div>
             </h2>
 
-            <div className="max-w-3xl">
+            <div className="max-w-3xl space-y-8">
               {experiences.map((exp, index) => (
-                <div key={index} className="mb-8">
+                <div key={index} className="border-b border-slate-700 pb-8 last:border-b-0">
                   <h3 className="text-xl font-semibold text-slate-200 mb-2">
                     <span>{exp.title}</span>
                     {exp.company && (
@@ -753,7 +600,7 @@ export default function Portfolio() {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6 }}
           >
             <h2 className="flex items-center text-2xl lg:text-3xl font-bold text-slate-200 mb-16">
@@ -764,23 +611,17 @@ export default function Portfolio() {
 
             <div className="space-y-16">
               {projects.map((project, index) => (
-                <motion.div
+                <div
                   key={project.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className={`group relative bg-slate-800/50 backdrop-blur-sm rounded-lg p-8 hover:bg-slate-800/70 transition-all duration-300`}
+                  className="group relative bg-slate-800/50 backdrop-blur-sm rounded-lg p-8 hover:bg-slate-800/70 transition-all duration-300"
                 >
                   <div className="flex flex-col lg:flex-row lg:items-center gap-8">
-                    {/* Icon Section */}
                     <div className="flex-shrink-0">
                       <div className="w-20 h-20 bg-slate-700 rounded-lg flex items-center justify-center text-teal-400 group-hover:bg-slate-600 transition-colors duration-300">
                         {project.icon}
                       </div>
                     </div>
                     
-                    {/* Content Section */}
                     <div className="flex-1">
                       <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 mb-4">
                         <div>
@@ -819,7 +660,7 @@ export default function Portfolio() {
                       </ul>
                     </div>
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
           </motion.div>
@@ -830,7 +671,7 @@ export default function Portfolio() {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
@@ -839,7 +680,7 @@ export default function Portfolio() {
               href="https://github.com/Nashid-k"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-teal-400 font-mono hover:underline"
+              className="text-teal-400 font-mono hover:underline cursor-pointer"
             >
               view the archive
             </a>
@@ -851,7 +692,7 @@ export default function Portfolio() {
                 key={index}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 className="bg-slate-800 p-6 rounded hover:-translate-y-2 transition-transform duration-300"
               >
@@ -866,7 +707,7 @@ export default function Portfolio() {
                       href={project.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-slate-400 hover:text-teal-400 transition-colors"
+                      className="text-slate-400 hover:text-teal-400 transition-colors cursor-pointer"
                     >
                       <Github size={18} />
                     </a>
@@ -875,7 +716,7 @@ export default function Portfolio() {
                         href={project.external}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-slate-400 hover:text-teal-400 transition-colors"
+                        className="text-slate-400 hover:text-teal-400 transition-colors cursor-pointer"
                       >
                         <ExternalLink size={18} />
                       </a>
@@ -901,7 +742,7 @@ export default function Portfolio() {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6 }}
           >
             <p className="font-mono text-teal-400 mb-4">04. What's Next?</p>
@@ -912,7 +753,7 @@ export default function Portfolio() {
             </p>
             <a
               href="mailto:nashidk1999@gmail.com"
-              className="inline-block px-7 py-4 text-teal-400 border border-teal-400 rounded font-mono hover:bg-teal-400/10 transition-colors"
+              className="inline-block px-7 py-4 text-teal-400 border border-teal-400 rounded font-mono hover:bg-teal-400/10 transition-colors cursor-pointer"
             >
               Say Hello
             </a>
@@ -929,28 +770,21 @@ export default function Portfolio() {
           transition={{ duration: 0.6 }}
         >
           <div className="lg:hidden flex justify-center space-x-6 mb-6">
-            <a
-              href="https://github.com/Nashid-k"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-slate-400 hover:text-teal-300 transition-colors"
-            >
-              <Github size={24} />
-            </a>
-            <a
-              href="https://linkedin.com/in/nashid-k"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-slate-400 hover:text-teal-300 transition-colors"
-            >
-              <Linkedin size={24} />
-            </a>
-            <a
-              href="mailto:nashidk1999@gmail.com"
-              className="text-slate-400 hover:text-teal-300 transition-colors"
-            >
-              <Mail size={24} />
-            </a>
+            {[
+              { href: "https://github.com/Nashid-k", icon: Github },
+              { href: "https://linkedin.com/in/nashid-k", icon: Linkedin },
+              { href: "mailto:nashidk1999@gmail.com", icon: Mail }
+            ].map(({ href, icon: Icon }, index) => (
+              <a
+                key={index}
+                href={href}
+                target={href.startsWith('mailto:') ? undefined : "_blank"}
+                rel={href.startsWith('mailto:') ? undefined : "noopener noreferrer"}
+                className="text-slate-400 hover:text-teal-300 transition-colors cursor-pointer"
+              >
+                <Icon size={24} />
+              </a>
+            ))}
           </div>
           
           <p className="text-slate-400 font-mono text-sm">
@@ -960,7 +794,6 @@ export default function Portfolio() {
           <p className="text-slate-500 font-mono text-xs mt-2">
             Designed & Built by Nashid K
           </p>
-
         </motion.div>
       </footer>
     </div>
