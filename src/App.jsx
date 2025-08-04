@@ -77,6 +77,42 @@ const otherProjects = [
     tech: ["React", "Session Storage", "Tailwind CSS"],
     github: "https://github.com/Nashid-k/TODO_react",
     external: "https://todo-react-6qtxru3ph-nashids-projects-e27665ac.vercel.app/"
+  },
+  {
+    title: "Calculator Application",
+    description: "Responsive calculator with clean design and real-time input/output display, built with vanilla JavaScript.",
+    tech: ["HTML5", "CSS3", "JavaScript"],
+    github: "https://github.com/Nashid-k/Calculator",
+    external: "https://nashid-k.github.io/Calculator/"
+  },
+  // Static clones for learning progression
+  {
+    title: "Kiwi Static Clone",
+    description: "Static clone of Kiwi website built with HTML and CSS.",
+    tech: ["HTML", "CSS"],
+    github: "https://github.com/Nashid-k/kiwi",
+    external: "https://nashid-k.github.io/kiwi/"
+  },
+  {
+    title: "Huawei Static Clone",
+    description: "Static clone of Huawei website using HTML and CSS.",
+    tech: ["HTML", "CSS"],
+    github: "https://github.com/Nashid-k/huawei",
+    external: "https://nashid-k.github.io/huawei/"
+  },
+  {
+    title: "Appy Fizz Responsive Clone",
+    description: "Responsive clone of Appy Fizz using HTML, CSS, JS, Bootstrap, and media queries.",
+    tech: ["HTML", "CSS", "JavaScript", "Bootstrap", "Media Queries"],
+    github: "https://github.com/Nashid-k/APPY-FIZZ-RESPONSIVE",
+    external: "https://nashid-k.github.io/APPY-FIZZ-RESPONSIVE/"
+  },
+  {
+    title: "First Responsive Portfolio",
+    description: "Responsive portfolio using HTML, CSS, Google Form submission, Bootstrap, and media queries.",
+    tech: ["HTML", "CSS", "Bootstrap", "Google Forms", "Media Queries"],
+    github: "https://github.com/Nashid-k/personal-website",
+    external: "https://nashid-k.github.io/personal-website/"
   }
 ];
 
@@ -120,6 +156,19 @@ const experiences = [
       "Troubleshot technical issues efficiently, improving system uptime and operational reliability",
       "Enforced strict adherence to safety protocols in demanding industrial environments",
       "Developed strong problem-solving skills and attention to detail in high-pressure situations"
+    ]
+  },
+   {
+    company: "KPA Crusher Private Limited",
+    title: "Accountant",
+    range: "February 2020 — February 2022",
+    url: "",
+    description: [
+      "Managed daily bookkeeping operations, invoice processing, and comprehensive expense reconciliation",
+      "Generated detailed audit reports and ensured compliance with regulatory standards and financial protocols",
+      "Improved accuracy and timeliness of financial record maintenance through systematic processes",
+      "Coordinated with operations teams to align financial tracking with business objectives",
+      "Developed analytical skills and attention to detail that later proved valuable in programming and debugging"
     ]
   }
 ];
