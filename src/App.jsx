@@ -431,7 +431,7 @@ export default function Portfolio() {
         >
           {[
             { href: "https://github.com/Nashid-k", icon: Github },
-            { href: "https://linkedin.com/in/nashid-k", icon: Linkedin },
+            { href: "https://linkedin.com/in/nashid-k-080909273/", icon: Linkedin },
             { href: "mailto:nashidk1999@gmail.com", icon: Mail }
           ].map(({ href, icon: Icon }, index) => (
             <a
