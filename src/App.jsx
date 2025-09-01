@@ -856,636 +856,513 @@
 
 
 
-import { useState, useEffect, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
-  Github, Linkedin, Mail, FileText, Menu, X,
-  ExternalLink, Code, Briefcase, User, BookOpen, Send
+  ExternalLink, Github, Linkedin, Mail, FileText, Menu, X,
+  ShoppingCart, Layers, Code
 } from "lucide-react";
 
-const Portfolio = () => {
-  const [activeSection, setActiveSection] = useState("home");
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
+const projects = [
+  {
+    id: "featured-project-1",
+    title: "BlogHub — Full Stack Blogging Platform",
+    description: "A comprehensive multi-user blogging platform with role-based access controls, secure JWT authentication, full CRUD operations, and real-time analytics dashboards. Features input validation, CORS management, and responsive mobile-first UI design. Built with modern security best practices.",
+    tech: ["React.js", "Node.js", "Express.js", "MongoDB", "JWT", "Context API", "bcryptjs"],
+    github: "https://github.com/Nashid-k/BlogHub",
+    external: null,
+    icon: <Code size={48} />
+  },
+  {
+    id: "featured-project-2",
+    title: "Fashion E-commerce Platform",
+    description: "Complete e-commerce solution with Razorpay payment processing, inventory management, Google OAuth and OTP-based authentication. Features admin dashboards for product/order tracking, analytics, and secure cloud deployment on AWS EC2 with comprehensive security configurations.",
+    tech: ["Node.js", "Express.js", "MongoDB", "EJS", "Razorpay", "AWS EC2", "Google OAuth"],
+    github: "https://github.com/Nashid-k/First_Project_Ecommerce",
+    external: null,
+    icon: <ShoppingCart size={48} />
+  },
+  {
+    id: "featured-project-3",
+    title: "Netflix Clone — Streaming Platform",
+    description: "Full-featured streaming service recreation with TMDB API integration, advanced search and filtering capabilities, personalized recommendations, dynamic content delivery, and real-time user watch history tracking. Built with modern state management using Zustand.",
+    tech: ["React.js", "Node.js", "Express.js", "MongoDB", "Zustand", "TMDB API"],
+    github: "https://github.com/Nashid-k/netflix-clone",
+    external: null,
+    icon: <Layers size={48} />
+  }
+];
 
-  // Handle scroll events
+const otherProjects = [
+  {
+    title: "Marketplace Clone (OLX-style)",
+    description: "Real-time product listing platform with advanced search and filtering, Firebase authentication, location-based queries, responsive UI with modular components and efficient state management.",
+    tech: ["React.js", "Firebase", "Tailwind CSS", "Context API"],
+    github: "https://github.com/Nashid-k/olx-clone_updated",
+    external: "https://olx-demo-delta.vercel.app"
+  },
+  {
+    title: "Job Listing Platform",
+    description: "Scalable job portal with React frontend and Node.js backend, featuring REST APIs and responsive design using Tailwind CSS for optimal user experience.",
+    tech: ["React", "Node.js", "Express", "Tailwind CSS"],
+    github: "https://github.com/Nashid-k/JobList_Application",
+    external: null
+  },
+  {
+    title: "Weather Dashboard",
+    description: "Geolocation-aware weather dashboard using OpenWeather API with dynamic updates, auto-location weather detection, and real-time data visualization.",
+    tech: ["React", "OpenWeather API", "Geolocation"],
+    github: "https://github.com/Nashid-k/weather_react",
+    external: null
+  },
+  {
+    title: "TypeScript CRUD Tool",
+    description: "Type-safe CRUD application implementing React and TypeScript best practices with maintainable state management and modular design architecture.",
+    tech: ["React", "TypeScript", "Tailwind CSS"],
+    github: "https://github.com/Nashid-k/CRUD_App",
+    external: null
+  },
+  {
+    title: "Digital Clock with Alarm",
+    description: "Multi-theme digital clock with Web Audio API integration, smooth animations, real-time alarms, and responsive mobile-friendly user interface.",
+    tech: ["HTML5", "CSS3", "JavaScript", "Web Audio API"],
+    github: "https://github.com/Nashid-k/Digital_Clock",
+    external: "https://nashid-k.github.io/Digital_Clock/"
+  },
+  {
+    title: "Advanced Todo Application",
+    description: "Feature-rich task management app with session storage persistence, category organization, and clean UI design.",
+    tech: ["React", "Session Storage", "Tailwind CSS"],
+    github: "https://github.com/Nashid-k/TODO_react",
+    external: "https://todo-react-6qtxru3ph-nashids-projects-e27665ac.vercel.app/"
+  },
+  {
+    title: "Calculator Application",
+    description: "Responsive calculator with clean design and real-time input/output display, built with vanilla JavaScript.",
+    tech: ["HTML5", "CSS3", "JavaScript"],
+    github: "https://github.com/Nashid-k/Calculator",
+    external: "https://nashid-k.github.io/Calculator/"
+  },
+  {
+    title: "Kiwi Static Clone",
+    description: "Static clone of Kiwi website built with HTML and CSS.",
+    tech: ["HTML", "CSS"],
+    github: "https://github.com/Nashid-k/kiwi",
+    external: "https://nashid-k.github.io/kiwi/"
+  },
+  {
+    title: "Huawei Static Clone",
+    description: "Static clone of Huawei website using HTML and CSS.",
+    tech: ["HTML", "CSS"],
+    github: "https://github.com/Nashid-k/huawei",
+    external: "https://nashid-k.github.io/huawei/"
+  },
+  {
+    title: "Appy Fizz Responsive Clone",
+    description: "Responsive clone of Appy Fizz using HTML, CSS, JS, Bootstrap, and media queries.",
+    tech: ["HTML", "CSS", "JavaScript", "Bootstrap", "Media Queries"],
+    github: "https://github.com/Nashid-k/APPY-FIZZ-RESPONSIVE",
+    external: "https://nashid-k.github.io/APPY-FIZZ-RESPONSIVE/"
+  },
+  {
+    title: "First Responsive Portfolio",
+    description: "Responsive portfolio using HTML, CSS, Google Form submission, Bootstrap, and media queries.",
+    tech: ["HTML", "CSS", "Bootstrap", "Google Forms", "Media Queries"],
+    github: "https://github.com/Nashid-k/personal-website",
+    external: "https://nashid-k.github.io/personal-website/"
+  }
+];
+
+const experiences = [
+  {
+    company: "Self-Learning & Independent Development",
+    title: "Focused Upskilling During Recovery",
+    range: "November 2024 — Present",
+    url: "",
+    description: [
+      "Dedicated personal study and project work to broaden expertise in JavaScript, TypeScript and modern frameworks",
+      "Developed multiple full-stack MERN applications simulating real-world requirements with production-ready features",
+      "Contributed to over 50 open-source repositories, refining code quality and best practices",
+      "Explored scalable system design, microservices architecture, and database optimization strategies",
+      "Prepared rigorously for technical interviews to align with current industry demands and modern development practices"
+    ]
+  },
+  {
+    company: "Brototype — MERN Stack Program",
+    title: "Full Stack Development Intern",
+    range: "December 2023 — November 2024",
+    url: "https://www.brototype.com/",
+    description: [
+      "Completed intensive 1,000+ hour MERN stack training with project-based deliverables and hands-on learning",
+      "Engineered 8+ production-ready web applications, covering comprehensive front-end to backend integration",
+      "Advanced React skills including hooks, lifecycle management, performance optimization, and modern patterns",
+      "Designed scalable REST APIs using Node.js and Express.js with seamless MongoDB integration",
+      "Implemented robust authentication systems using JWT, OAuth, and encrypted password storage with security best practices",
+      "Collaborated in Agile teams using Git workflows, participating in code review sessions and pair programming",
+      "Handled deployments on AWS and Vercel, managing CI/CD pipelines and environment variables for production environments"
+    ]
+  },
+  {
+    company: "Hajee A. P. Bava & Co. (HAPBCO)",
+    title: "Industrial Technician",
+    range: "March 2022 — November 2023",
+    url: "https://hapbco.co",
+    description: [
+      "Installed and maintained complex industrial machinery, ensuring timely project completion and quality standards",
+      "Coordinated with engineering teams to meet critical project milestones and maintain high-quality deliverables",
+      "Troubleshot technical issues efficiently, improving system uptime and operational reliability",
+      "Enforced strict adherence to safety protocols in demanding industrial environments",
+      "Developed strong problem-solving skills and attention to detail in high-pressure situations"
+    ]
+  },
+  {
+    company: "KPA Crusher Private Limited",
+    title: "Accountant",
+    range: "February 2020 — February 2022",
+    url: "",
+    description: [
+      "Managed daily bookkeeping operations, invoice processing, and comprehensive expense reconciliation",
+      "Generated detailed audit reports and ensured compliance with regulatory standards and financial protocols",
+      "Improved accuracy and timeliness of financial record maintenance through systematic processes",
+      "Coordinated with operations teams to align financial tracking with business objectives",
+      "Developed analytical skills and attention to detail that later proved valuable in programming and debugging"
+    ]
+  }
+];
+
+const CustomCursor = () => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isPointer, setIsPointer] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
+
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-      
-      // Update active section based on scroll position
-      const sections = document.querySelectorAll("section");
-      let currentSection = "home";
-      
-      sections.forEach((section) => {
-        const sectionTop = section.offsetTop;
-        if (window.scrollY >= sectionTop - 100) {
-          currentSection = section.id;
-        }
-      });
-      
-      setActiveSection(currentSection);
+    const mediaQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
+    setIsDesktop(mediaQuery.matches);
+
+    const handleMediaChange = (e) => setIsDesktop(e.matches);
+    mediaQuery.addEventListener('change', handleMediaChange);
+    return () => mediaQuery.removeEventListener('change', handleMediaChange);
+  }, []);
+
+  const updateMousePosition = useCallback((e) => {
+    setMousePosition({ x: e.clientX, y: e.clientY });
+  }, []);
+
+  const updateCursorType = useCallback((e) => {
+    const target = e.target;
+    const isClickable = target.matches('a, button, [role="button"], input, textarea, select, [onclick], .cursor-pointer') ||
+                       target.closest('a, button, [role="button"], input, textarea, select, [onclick], .cursor-pointer');
+    setIsPointer(isClickable);
+  }, []);
+
+  useEffect(() => {
+    if (!isDesktop) return;
+
+    const handleMouseEnter = () => {
+      setIsVisible(true);
+      document.body.style.cursor = 'none';
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    const handleMouseLeave = () => {
+      setIsVisible(false);
+      document.body.style.cursor = 'auto';
+    };
 
-  // Scroll to section
-  const scrollToSection = useCallback((sectionId) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-      setIsMenuOpen(false);
-    }
-  }, []);
+    document.addEventListener('mousemove', updateMousePosition, { passive: true });
+    document.addEventListener('mouseenter', handleMouseEnter);
+    document.addEventListener('mouseleave', handleMouseLeave);
+    document.addEventListener('mouseover', updateCursorType, { passive: true });
 
-  // Projects data
-  const projects = [
-    {
-      id: "resume-project",
-      title: "Interactive Resume Builder",
-      description: "A modern, responsive resume builder that creates professional PDF resumes with real-time preview. Features customizable templates, export functionality, and a clean UI.",
-      tech: ["React", "TypeScript", "Tailwind CSS", "PDF Generation", "Context API"],
-      github: "https://github.com/Nashid-k/resume-builder",
-      external: "https://resume-builder-nashid.vercel.app/",
-      image: "/api/placeholder/400/250",
-      featured: true
-    },
-    {
-      id: "bloghub",
-      title: "BlogHub — Full Stack Blogging Platform",
-      description: "A comprehensive multi-user blogging platform with role-based access controls, secure JWT authentication, full CRUD operations, and real-time analytics dashboards.",
-      tech: ["React.js", "Node.js", "Express.js", "MongoDB", "JWT", "Context API"],
-      github: "https://github.com/Nashid-k/BlogHub",
-      external: null,
-      image: "/api/placeholder/400/250",
-      featured: true
-    },
-    {
-      id: "ecommerce",
-      title: "Fashion E-commerce Platform",
-      description: "Complete e-commerce solution with Razorpay payment processing, inventory management, Google OAuth and OTP-based authentication.",
-      tech: ["Node.js", "Express.js", "MongoDB", "EJS", "Razorpay", "AWS EC2"],
-      github: "https://github.com/Nashid-k/First_Project_Ecommerce",
-      external: null,
-      image: "/api/placeholder/400/250",
-      featured: true
-    },
-    {
-      id: "netflix",
-      title: "Netflix Clone — Streaming Platform",
-      description: "Full-featured streaming service recreation with TMDB API integration, advanced search and filtering capabilities, and personalized recommendations.",
-      tech: ["React.js", "Node.js", "Express.js", "MongoDB", "Zustand", "TMDB API"],
-      github: "https://github.com/Nashid-k/netflix-clone",
-      external: null,
-      image: "/api/placeholder/400/250",
-      featured: false
-    },
-    {
-      id: "marketplace",
-      title: "Marketplace Clone (OLX-style)",
-      description: "Real-time product listing platform with advanced search and filtering, Firebase authentication, and location-based queries.",
-      tech: ["React.js", "Firebase", "Tailwind CSS", "Context API"],
-      github: "https://github.com/Nashid-k/olx-clone_updated",
-      external: "https://olx-demo-delta.vercel.app",
-      image: "/api/placeholder/400/250",
-      featured: false
-    },
-    {
-      id: "jobportal",
-      title: "Job Listing Platform",
-      description: "Scalable job portal with React frontend and Node.js backend, featuring REST APIs and responsive design.",
-      tech: ["React", "Node.js", "Express", "Tailwind CSS"],
-      github: "https://github.com/Nashid-k/JobList_Application",
-      external: null,
-      image: "/api/placeholder/400/250",
-      featured: false
-    }
-  ];
+    return () => {
+      document.removeEventListener('mousemove', updateMousePosition);
+      document.removeEventListener('mouseenter', handleMouseEnter);
+      document.removeEventListener('mouseleave', handleMouseLeave);
+      document.removeEventListener('mouseover', updateCursorType);
+      document.body.style.cursor = 'auto';
+    };
+  }, [isDesktop, updateMousePosition, updateCursorType]);
 
-  // Experience data
-  const experiences = [
-    {
-      company: "Self-Learning & Independent Development",
-      title: "Focused Upskilling During Recovery",
-      range: "November 2024 — Present",
-      description: [
-        "Dedicated personal study and project work to broaden expertise in JavaScript, TypeScript and modern frameworks",
-        "Developed multiple full-stack MERN applications simulating real-world requirements with production-ready features",
-        "Contributed to over 50 open-source repositories, refining code quality and best practices"
-      ]
-    },
-    {
-      company: "Brototype — MERN Stack Program",
-      title: "Full Stack Development Intern",
-      range: "December 2023 — November 2024",
-      description: [
-        "Completed intensive 1,000+ hour MERN stack training with project-based deliverables and hands-on learning",
-        "Engineered 8+ production-ready web applications, covering comprehensive front-end to backend integration",
-        "Advanced React skills including hooks, lifecycle management, performance optimization, and modern patterns"
-      ]
-    }
-  ];
-
-  // Skills data
-  const skills = {
-    frontend: ["React.js", "Next.js", "JavaScript ES6+", "TypeScript", "Tailwind CSS", "HTML5", "CSS3"],
-    backend: ["Node.js", "Express.js", "REST APIs", "JWT Authentication", "Middleware", "Server Design"],
-    database: ["MongoDB", "PostgreSQL", "Query Optimization", "Indexing", "Mongoose"],
-    tools: ["Git", "GitHub", "VS Code", "Postman", "Vercel", "Render", "AWS EC2"],
-    other: ["Responsive Design", "Problem Solving", "Agile Methodology", "UI/UX Principles"]
-  };
+  if (!isDesktop || !isVisible) return null;
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans">
-      {/* Navigation */}
-      <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? "bg-white shadow-md py-3" : "bg-transparent py-5"}`}>
-        <div className="container mx-auto px-6 flex justify-between items-center">
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            className="text-2xl font-bold text-teal-600 cursor-pointer"
-            onClick={() => scrollToSection("home")}
-          >
-            Nashid K
-          </motion.div>
+    <>
+      <div 
+        className="fixed w-3 h-3 bg-violet-600 rounded-full pointer-events-none z-[9999] mix-blend-difference transition-transform duration-100 ease-out"
+        style={{
+          left: mousePosition.x - 6,
+          top: mousePosition.y - 6,
+          transform: `scale(${isPointer ? 0.5 : 1})`,
+        }}
+      />
+      <div 
+        className="fixed w-10 h-10 border-2 border-violet-600/40 rounded-full pointer-events-none z-[9998] transition-transform duration-150 ease-out"
+        style={{
+          left: mousePosition.x - 20,
+          top: mousePosition.y - 20,
+          transform: `scale(${isPointer ? 1.2 : 1})`,
+        }}
+      />
+    </>
+  );
+};
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            {["about", "skills", "projects", "experience", "contact"].map((item) => (
-              <button
-                key={item}
-                onClick={() => scrollToSection(item)}
-                className={`font-medium transition-colors ${activeSection === item ? "text-teal-600" : "text-slate-700 hover:text-teal-500"}`}
-              >
-                {item.charAt(0).toUpperCase() + item.slice(1)}
+export default function Portfolio() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
+    setIsDesktop(mediaQuery.matches);
+
+    const handleMediaChange = (e) => setIsDesktop(e.matches);
+    mediaQuery.addEventListener('change', handleMediaChange);
+    return () => mediaQuery.removeEventListener('change', handleMediaChange);
+  }, []);
+
+  useEffect(() => {
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          setScrollY(window.scrollY);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToSection = useCallback((sectionId) => {
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+    setIsMenuOpen(false);
+  }, []);
+
+  const fadeInUp = useMemo(() => ({
+    initial: { opacity: 0, y: 30 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.5, ease: 'easeOut' }
+  }), []);
+
+  const staggerContainer = useMemo(() => ({
+    initial: { opacity: 0 },
+    animate: { 
+      opacity: 1,
+      transition: { staggerChildren: 0.1 }
+    }
+  }), []);
+
+  return (
+    <div className="min-h-screen bg-gray-900 text-white font-sans selection:bg-violet-500 selection:text-white" style={{ cursor: isDesktop ? 'none' : 'auto' }}>
+      <CustomCursor />
+      <div className="fixed inset-0 z-0 opacity-10">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#7C3AED_2px,transparent_2px)] bg-[size:24px_24px]" />
+      </div>
+
+      <header className={`fixed top-0 z-50 w-full px-4 py-4 lg:px-12 transition-all duration-300 ${scrollY > 100 ? 'bg-gray-900/90 shadow-lg backdrop-blur-md' : 'bg-transparent'}`}>
+        <nav className="max-w-7xl mx-auto flex items-center justify-between">
+          <motion.div {...fadeInUp}>
+            <a href="/" className="text-xl font-extrabold text-violet-500 hover:text-violet-400 transition-colors">Nashid</a>
+          </motion.div>
+          <motion.div {...fadeInUp} transition={{ delay: 0.1 }} className="hidden lg:flex items-center gap-8">
+            {[{ id: 'about', label: 'About' }, { id: 'experience', label: 'Experience' }, { id: 'work', label: 'Work' }, { id: 'contact', label: 'Contact' }].map(({ id, label }) => (
+              <button key={id} onClick={() => scrollToSection(id)} className="text-sm font-medium text-gray-300 hover:text-violet-400 transition-colors">
+                {label}
               </button>
             ))}
-            <a
-              href="/resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 transition-colors flex items-center gap-2"
-            >
-              <FileText size={16} />
+            <a href="/Nashid_Resume.pdf" target="_blank" rel="noopener noreferrer" className="px-4 py-2 text-sm font-medium text-white bg-violet-600 rounded-lg hover:bg-violet-700 transition-colors">
               Resume
             </a>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden text-slate-700"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
+          </motion.div>
+          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="lg:hidden p-2 text-violet-500" aria-label="Toggle menu">
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
-        </div>
-
-        {/* Mobile Navigation */}
+        </nav>
         <AnimatePresence>
           {isMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="md:hidden bg-white shadow-lg absolute top-full left-0 right-0 overflow-hidden"
-            >
-              <div className="container mx-auto px-6 py-4 flex flex-col space-y-4">
-                {["about", "skills", "projects", "experience", "contact"].map((item) => (
-                  <button
-                    key={item}
-                    onClick={() => scrollToSection(item)}
-                    className={`py-2 font-medium text-left ${activeSection === item ? "text-teal-600" : "text-slate-700"}`}
-                  >
-                    {item.charAt(0).toUpperCase() + item.slice(1)}
-                  </button>
-                ))}
-                <a
-                  href="/resume.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="py-2 text-teal-600 font-medium flex items-center gap-2"
-                >
-                  <FileText size={16} />
-                  Resume
-                </a>
+            <motion.div initial={{ opacity: 0, x: '100%' }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: '100%' }} transition={{ type: 'tween', duration: 0.3 }} className="fixed top-0 right-0 bottom-0 z-50 w-3/4 bg-gray-800 shadow-xl lg:hidden">
+              <div className="flex flex-col p-6">
+                <button onClick={() => setIsMenuOpen(false)} className="self-end p-2 text-violet-500 mb-6">
+                  <X size={24} />
+                </button>
+                <nav className="flex flex-col gap-6 text-lg font-medium">
+                  {[{ id: 'about', label: 'About' }, { id: 'experience', label: 'Experience' }, { id: 'work', label: 'Work' }, { id: 'contact', label: 'Contact' }].map(({ id, label }) => (
+                    <button key={id} onClick={() => scrollToSection(id)} className="text-left text-gray-300 hover:text-violet-400">
+                      {label}
+                    </button>
+                  ))}
+                  <a href="/Nashid_Resume.pdf" target="_blank" rel="noopener noreferrer" className="px-4 py-2 text-white bg-violet-600 rounded-lg hover:bg-violet-700">Resume</a>
+                </nav>
               </div>
             </motion.div>
           )}
         </AnimatePresence>
-      </nav>
+      </header>
 
-      {/* Hero Section */}
-      <section id="home" className="min-h-screen flex items-center pt-20 pb-16">
-        <div className="container mx-auto px-6 flex flex-col-reverse md:flex-row items-center justify-between gap-12">
-          <motion.div 
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7 }}
-            className="md:w-1/2"
-          >
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-4">
-              Full Stack Developer
-            </h1>
-            <p className="text-xl text-slate-600 mb-8">
-              I build exceptional digital experiences using modern web technologies with a focus on performance and accessibility.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <button 
-                onClick={() => scrollToSection("projects")}
-                className="px-6 py-3 bg-teal-600 text-white rounded-md hover:bg-teal-700 transition-colors"
-              >
-                View My Work
-              </button>
-              <button 
-                onClick={() => scrollToSection("contact")}
-                className="px-6 py-3 border border-teal-600 text-teal-600 rounded-md hover:bg-teal-50 transition-colors"
-              >
-                Contact Me
-              </button>
-            </div>
+      <div className="fixed top-1/2 right-4 transform -translate-y-1/2 hidden lg:flex flex-col gap-4 z-10">
+        <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.8 }}>
+          {[{ href: "https://github.com/Nashid-k", icon: Github }, { href: "https://linkedin.com/in/nashid-k-080909273/", icon: Linkedin }, { href: "mailto:nashidk1999@gmail.com", icon: Mail }].map(({ href, icon: Icon }, index) => (
+            <a key={index} href={href} target={href.startsWith('mailto:') ? undefined : "_blank"} rel={href.startsWith('mailto:') ? undefined : "noopener noreferrer"} className="text-gray-400 hover:text-violet-400 hover:scale-110 transition-all duration-300">
+              <Icon size={24} />
+            </a>
+          ))}
+        </motion.div>
+      </div>
+
+      <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
+        <section className="min-h-screen flex items-center justify-center py-16">
+          <motion.div {...staggerContainer} className="text-center max-w-3xl">
+            <motion.p {...fadeInUp} className="text-base text-violet-400 mb-4">Hello, I'm</motion.p>
+            <motion.h1 {...fadeInUp} transition={{ delay: 0.1 }} className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-white mb-4 tracking-tight">Nashid</motion.h1>
+            <motion.h2 {...fadeInUp} transition={{ delay: 0.2 }} className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-300 mb-6">Building Innovative Web Solutions</motion.h2>
+            <motion.p {...fadeInUp} transition={{ delay: 0.3 }} className="text-base sm:text-lg text-gray-400 mb-8 leading-relaxed">
+              I'm a full-stack developer dedicated to crafting accessible, high-performance web applications using the MERN stack and modern tools.
+            </motion.p>
+            <motion.div {...fadeInUp} transition={{ delay: 0.4 }}>
+              <button onClick={() => scrollToSection('work')} className="px-6 py-3 text-white bg-violet-600 rounded-lg hover:bg-violet-700 transition-colors text-sm font-medium">Discover My Projects</button>
+            </motion.div>
           </motion.div>
-          
-          <motion.div 
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="md:w-2/5 flex justify-center"
-          >
-            <div className="w-64 h-64 md:w-80 md:h-80 bg-teal-100 rounded-full overflow-hidden border-4 border-white shadow-xl">
-              <div className="w-full h-full bg-teal-200 flex items-center justify-center text-teal-600">
-                <User size={96} />
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+        </section>
 
-      {/* About Section */}
-      <section id="about" className="py-20 bg-white">
-        <div className="container mx-auto px-6">
-          <motion.h2 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-3xl font-bold text-center mb-12 text-slate-900"
-          >
-            About Me
-          </motion.h2>
-          
-          <div className="max-w-3xl mx-auto text-lg text-slate-700 leading-relaxed">
-            <p className="mb-6">
-              I'm a passionate Full Stack Developer with expertise in the MERN stack, specializing in building 
-              scalable web applications with modern technologies. My journey into development started from 
-              non-technical backgrounds in operations and accounting, which gives me a unique perspective 
-              on creating practical, business-oriented solutions.
-            </p>
-            <p className="mb-6">
-              I've successfully delivered 12+ production applications, including AI-powered SaaS platforms, 
-              e-commerce solutions, and role-based access control systems. I'm particularly skilled at 
-              database optimization, having improved query performance by up to 70% through indexing 
-              and optimization techniques.
-            </p>
-            <p>
-              When I'm not coding, I enjoy learning about new technologies, contributing to open-source 
-              projects, and solving complex problems. I believe in writing clean, maintainable code and 
-              creating user experiences that are both beautiful and functional.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Skills Section */}
-      <section id="skills" className="py-20 bg-slate-100">
-        <div className="container mx-auto px-6">
-          <motion.h2 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-3xl font-bold text-center mb-12 text-slate-900"
-          >
-            Skills & Technologies
-          </motion.h2>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {Object.entries(skills).map(([category, items]) => (
-              <motion.div 
-                key={category}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
-                className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
-              >
-                <h3 className="text-xl font-semibold mb-4 text-teal-600 capitalize">
-                  {category}
-                </h3>
-                <ul className="space-y-2">
-                  {items.map((skill) => (
-                    <li key={skill} className="flex items-center">
-                      <span className="w-2 h-2 bg-teal-400 rounded-full mr-3"></span>
-                      {skill}
-                    </li>
+        <section id="about" className="py-16">
+          <motion.div {...staggerContainer}>
+            <motion.h2 {...fadeInUp} className="text-3xl sm:text-4xl font-extrabold text-white mb-10 text-center">About Me</motion.h2>
+            <div className="grid lg:grid-cols-2 gap-8">
+              <motion.div {...fadeInUp} transition={{ delay: 0.1 }} className="relative h-80 lg:h-[32rem] rounded-2xl overflow-hidden shadow-xl">
+                <img src="/profile.jpg" alt="Nashid" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
+                <div className="absolute inset-0 bg-violet-600/20 hover:bg-transparent transition-colors duration-300"></div>
+              </motion.div>
+              <motion.div {...fadeInUp} transition={{ delay: 0.2 }} className="space-y-5">
+                <p className="text-gray-300 text-sm sm:text-base leading-relaxed">
+                  Hey there! I'm Nashid, passionate about creating web solutions that make a difference. My journey from operations and accounting to development gives me a unique perspective on building user-centric applications.
+                </p>
+                <p className="text-gray-300 text-sm sm:text-base leading-relaxed">
+                  Overcoming challenges like Bell's Palsy has honed my resilience and problem-solving skills, pushing me to create inclusive, accessible digital experiences.
+                </p>
+                <p className="text-gray-300 text-sm sm:text-base leading-relaxed">
+                  I specialize in building everything from e-commerce platforms to streaming services, always prioritizing clean code and exceptional user experiences.
+                </p>
+                <p className="text-gray-300 font-medium text-sm sm:text-base">My Tech Stack:</p>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm text-gray-400">
+                  {["JavaScript (ES6+)", "TypeScript", "React", "Node.js", "Express", "MongoDB", "PostgreSQL", "Firebase", "AWS (EC2)", "Git & GitHub", "Tailwind CSS", "Bootstrap"].map((tech) => (
+                    <div key={tech} className="flex items-center"><span className="text-violet-400 mr-2">•</span>{tech}</div>
                   ))}
-                </ul>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Projects Section */}
-      <section id="projects" className="py-20 bg-white">
-        <div className="container mx-auto px-6">
-          <motion.h2 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-3xl font-bold text-center mb-12 text-slate-900"
-          >
-            Featured Projects
-          </motion.h2>
-          
-          <div className="grid md:grid-cols-2 gap-8">
-            {projects.filter(p => p.featured).map((project) => (
-              <motion.div 
-                key={project.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
-                className="bg-slate-50 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow"
-              >
-                <div className="h-48 bg-teal-100 overflow-hidden">
-                  <div className="w-full h-full bg-teal-200 flex items-center justify-center text-teal-600">
-                    <Code size={64} />
-                  </div>
                 </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold mb-2 text-slate-900">{project.title}</h3>
-                  <p className="text-slate-600 mb-4">{project.description}</p>
-                  
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {project.tech.map((tech) => (
-                      <span key={tech} className="px-3 py-1 bg-teal-100 text-teal-700 text-sm rounded-full">
-                        {tech}
-                      </span>
+              </motion.div>
+            </div>
+          </motion.div>
+        </section>
+
+        <section id="experience" className="py-16">
+          <motion.div {...staggerContainer}>
+            <motion.h2 {...fadeInUp} className="text-3xl sm:text-4xl font-extrabold text-white mb-10 text-center">My Experience</motion.h2>
+            <div className="space-y-6 max-w-4xl mx-auto">
+              {experiences.map((exp, index) => (
+                <motion.div key={index} {...fadeInUp} transition={{ delay: index * 0.1 }} className="bg-gray-800/50 p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm">
+                  <h3 className="text-lg sm:text-xl font-bold text-white">
+                    {exp.title} {exp.company && <span>@ {exp.url ? <a href={exp.url} target="_blank" rel="noopener noreferrer" className="text-violet-400 hover:underline">{exp.company}</a> : exp.company}</span>}
+                  </h3>
+                  <p className="text-sm text-gray-400 mt-1">{exp.range}</p>
+                  <ul className="mt-4 space-y-2 text-sm text-gray-300">
+                    {exp.description.map((item, i) => (
+                      <li key={i} className="flex"><span className="text-violet-400 mr-2">•</span>{item}</li>
                     ))}
-                  </div>
-                  
-                  <div className="flex gap-4">
-                    {project.github && (
-                      <a 
-                        href={project.github} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-1 text-slate-700 hover:text-teal-600 transition-colors"
-                      >
-                        <Github size={18} />
-                        Code
-                      </a>
-                    )}
-                    {project.external && (
-                      <a 
-                        href={project.external} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-1 text-slate-700 hover:text-teal-600 transition-colors"
-                      >
-                        <ExternalLink size={18} />
-                        Live Demo
-                      </a>
-                    )}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="mt-16"
-          >
-            <h3 className="text-2xl font-semibold text-center mb-8 text-slate-900">Other Projects</h3>
-            
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {projects.filter(p => !p.featured).map((project) => (
-                <div key={project.id} className="bg-slate-50 p-5 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                  <h4 className="font-semibold mb-2 text-slate-900">{project.title}</h4>
-                  <p className="text-sm text-slate-600 mb-3">{project.description}</p>
-                  
-                  <div className="flex gap-3">
-                    {project.github && (
-                      <a 
-                        href={project.github} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-slate-500 hover:text-teal-600 transition-colors"
-                      >
-                        <Github size={16} />
-                      </a>
-                    )}
-                    {project.external && (
-                      <a 
-                        href={project.external} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-slate-500 hover:text-teal-600 transition-colors"
-                      >
-                        <ExternalLink size={16} />
-                      </a>
-                    )}
-                  </div>
-                </div>
+                  </ul>
+                </motion.div>
               ))}
             </div>
           </motion.div>
-        </div>
-      </section>
+        </section>
 
-      {/* Experience Section */}
-      <section id="experience" className="py-20 bg-slate-100">
-        <div className="container mx-auto px-6">
-          <motion.h2 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-3xl font-bold text-center mb-12 text-slate-900"
-          >
-            Experience & Education
-          </motion.h2>
-          
-          <div className="max-w-3xl mx-auto space-y-8">
-            {experiences.map((exp, index) => (
-              <motion.div 
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-white p-6 rounded-lg shadow-sm"
-              >
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <h3 className="text-xl font-semibold text-slate-900">{exp.title}</h3>
-                    <p className="text-teal-600">{exp.company}</p>
+        <section id="work" className="py-16">
+          <motion.div {...staggerContainer}>
+            <motion.h2 {...fadeInUp} className="text-3xl sm:text-4xl font-extrabold text-white mb-10 text-center">Featured Projects</motion.h2>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {projects.map((project, index) => (
+                <motion.div key={project.id} {...fadeInUp} transition={{ delay: index * 0.1 }} className="bg-gray-800/50 p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 backdrop-blur-sm">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="text-violet-400">{project.icon}</div>
+                    <div className="flex-1">
+                      <h3 className="text-lg font-bold text-white">{project.title}</h3>
+                      <p className="text-xs text-gray-400">Featured Project</p>
+                    </div>
                   </div>
-                  <span className="px-3 py-1 bg-teal-100 text-teal-700 text-sm rounded-full">
-                    {exp.range}
-                  </span>
-                </div>
-                
-                <ul className="space-y-2">
-                  {exp.description.map((item, i) => (
-                    <li key={i} className="flex">
-                      <span className="text-teal-500 mr-2">•</span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            ))}
-            
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="bg-white p-6 rounded-lg shadow-sm"
-            >
-              <div className="flex justify-between items-start mb-4">
-                <div>
-                  <h3 className="text-xl font-semibold text-slate-900">Software Engineering Fellowship</h3>
-                  <p className="text-teal-600">Brototype (1000+ hrs Full Stack Program)</p>
-                </div>
-                <span className="px-3 py-1 bg-teal-100 text-teal-700 text-sm rounded-full">
-                  Dec 2023 – Nov 2024
-                </span>
-              </div>
-              
-              <ul className="space-y-2">
-                <li className="flex">
-                  <span className="text-teal-500 mr-2">•</span>
-                  Completed 8+ full-stack apps, mastering authentication, payments, and cloud deployment
-                </li>
-                <li className="flex">
-                  <span className="text-teal-500 mr-2">•</span>
-                  Improved database query performance by 70% with indexing and optimization
-                </li>
-              </ul>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Section */}
-      <section id="contact" className="py-20 bg-white">
-        <div className="container mx-auto px-6">
-          <motion.h2 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-3xl font-bold text-center mb-12 text-slate-900"
-          >
-            Get In Touch
-          </motion.h2>
-          
-          <div className="max-w-md mx-auto bg-slate-50 p-8 rounded-lg shadow-sm">
-            <form className="space-y-6">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-1">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  className="w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                  placeholder="Your name"
-                />
-              </div>
-              
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  className="w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                  placeholder="your.email@example.com"
-                />
-              </div>
-              
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium text-slate-700 mb-1">
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  rows="4"
-                  className="w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                  placeholder="Your message..."
-                ></textarea>
-              </div>
-              
-              <button
-                type="submit"
-                className="w-full px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 transition-colors flex items-center justify-center gap-2"
-              >
-                <Send size={18} />
-                Send Message
-              </button>
-            </form>
-            
-            <div className="mt-8 pt-6 border-t border-slate-200 flex justify-center space-x-6">
-              <a 
-                href="https://github.com/Nashid-k" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-slate-500 hover:text-teal-600 transition-colors"
-              >
-                <Github size={24} />
-              </a>
-              <a 
-                href="https://linkedin.com/in/nashid-k-080909273" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-slate-500 hover:text-teal-600 transition-colors"
-              >
-                <Linkedin size={24} />
-              </a>
-              <a 
-                href="mailto:nashidk1999@gmail.com" 
-                className="text-slate-500 hover:text-teal-600 transition-colors"
-              >
-                <Mail size={24} />
-              </a>
+                  <p className="text-sm text-gray-300 mb-4">{project.description}</p>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {project.tech.map((tech, i) => (
+                      <span key={i} className="px-2 py-1 text-xs text-violet-400 bg-violet-600/20 rounded-full">{tech}</span>
+                    ))}
+                  </div>
+                  <div className="flex gap-3">
+                    <a href={project.github} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-violet-400"><Github size={20} /></a>
+                    {project.external && <a href={project.external} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-violet-400"><ExternalLink size={20} /></a>}
+                  </div>
+                </motion.div>
+              ))}
             </div>
-          </div>
-        </div>
-      </section>
+          </motion.div>
+        </section>
 
-      {/* Footer */}
-      <footer className="py-8 bg-slate-900 text-slate-200">
-        <div className="container mx-auto px-6 text-center">
-          <p>© {new Date().getFullYear()} Nashid K. All rights reserved.</p>
-          <p className="mt-2 text-sm text-slate-400">
-            Built with React & Tailwind CSS
-          </p>
-        </div>
+        <section className="py-16">
+          <motion.div {...staggerContainer}>
+            <motion.h2 {...fadeInUp} className="text-3xl sm:text-4xl font-extrabold text-white mb-10 text-center">Other Projects</motion.h2>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {otherProjects.map((project, index) => (
+                <motion.div key={index} {...fadeInUp} transition={{ delay: index * 0.1 }} className="bg-gray-800/50 p-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 backdrop-blur-sm">
+                  <div className="flex justify-between items-center mb-3">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" className="text-violet-400"><path d="M22 16.74l-7.1-4.73 7.1-4.74V16.74zm-9.02-4.74L2 7.26v9.48L12.98 12z" fill="currentColor"/></svg>
+                    <div className="flex gap-2">
+                      <a href={project.github} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-violet-400"><Github size={18} /></a>
+                      {project.external && <a href={project.external} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-violet-400"><ExternalLink size={18} /></a>}
+                    </div>
+                  </div>
+                  <h3 className="text-base font-bold text-white mb-2">{project.title}</h3>
+                  <p className="text-xs text-gray-300 mb-3">{project.description}</p>
+                  <div className="flex flex-wrap gap-1.5 text-xs text-gray-400">
+                    {project.tech.map((tech, i) => (
+                      <span key={i}>{tech}</span>
+                    ))}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+            <motion.div {...fadeInUp} transition={{ delay: 0.3 }} className="text-center mt-8">
+              <a href="https://github.com/Nashid-k" target="_blank" rel="noopener noreferrer" className="text-violet-400 hover:underline text-sm">View All Projects</a>
+            </motion.div>
+          </motion.div>
+        </section>
+
+        <section id="contact" className="py-16 text-center">
+          <motion.div {...staggerContainer}>
+            <motion.p {...fadeInUp} className="text-base text-violet-400 mb-4">Let's Talk</motion.p>
+            <motion.h2 {...fadeInUp} transition={{ delay: 0.1 }} className="text-3xl sm:text-4xl font-extrabold text-white mb-6">Get In Touch</motion.h2>
+            <motion.p {...fadeInUp} transition={{ delay: 0.2 }} className="max-w-xl mx-auto text-base text-gray-300 mb-8">
+              I'm always open to new opportunities, questions, or a quick chat. Reach out, and I'll respond as soon as I can!
+            </motion.p>
+            <motion.div {...fadeInUp} transition={{ delay: 0.3 }}>
+              <a href="mailto:nashidk1999@gmail.com" className="px-6 py-3 text-white bg-violet-600 rounded-lg hover:bg-violet-700 transition-colors text-sm font-medium">Say Hello</a>
+            </motion.div>
+          </motion.div>
+        </section>
+      </main>
+
+      <footer className="py-8 px-4 sm:px-6 lg:px-12 text-center">
+        <motion.div {...fadeInUp}>
+          <div className="lg:hidden flex justify-center gap-6 mb-6">
+            {[{ href: "https://github.com/Nashid-k", icon: Github }, { href: "https://linkedin.com/in/nashid-k", icon: Linkedin }, { href: "mailto:nashidk1999@gmail.com", icon: Mail }].map(({ href, icon: Icon }, index) => (
+              <a key={index} href={href} target={href.startsWith('mailto:') ? undefined : "_blank"} rel={href.startsWith('mailto:') ? undefined : "noopener noreferrer"} className="text-gray-400 hover:text-violet-400">
+                <Icon size={24} />
+              </a>
+            ))}
+          </div>
+          <p className="text-sm text-gray-400">Built with ❤️ using guidance from Claude AI</p>
+          <p className="text-xs text-gray-500 mt-2">Designed & Built by Nashid K</p>
+        </motion.div>
       </footer>
     </div>
   );
-};
-
-export default Portfolio;
+}
